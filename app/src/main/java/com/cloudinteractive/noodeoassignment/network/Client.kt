@@ -1,5 +1,6 @@
 package com.cloudinteractive.noodeoassignment.network
 
+import com.cloudinteractive.noodeoassignment.BuildConfig
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -21,7 +22,7 @@ object Client {
                         .addHeader("Content-Type", "application/json")
                         .addHeader(
                             "X-Parse-Application-Id",
-                            "vqYuKPOkLQLYHhk4QTGsGKFwATT4mBIGREI2m8eD"
+                            BuildConfig.PARSE_APPLICATION_ID
                         )
                         .addHeader("X-Parse-Session-Token", sessionToken)
                         .url(it.request().url())
@@ -30,7 +31,7 @@ object Client {
                         .addHeader("Content-Type", "application/json")
                         .addHeader(
                             "X-Parse-Application-Id",
-                            "vqYuKPOkLQLYHhk4QTGsGKFwATT4mBIGREI2m8eD"
+                            BuildConfig.PARSE_APPLICATION_ID
                         )
                         .url(it.request().url())
                 }
@@ -44,7 +45,7 @@ object Client {
 
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://watch-master-staging.herokuapp.com")
+            .baseUrl(BuildConfig.HOST)
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
             .client(okHttpClient)

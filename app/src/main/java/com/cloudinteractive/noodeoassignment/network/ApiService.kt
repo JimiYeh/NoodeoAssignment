@@ -13,11 +13,11 @@ interface ApiService {
     suspend fun login(
         @Query("username") userName: String,
         @Query("password") password: String
-    ): NetworkResponse<RespLogin, RespError>
+    ): NetworkResponse<RespLogin>
 
     @PUT("/api/users/{objectId}")
     suspend fun updateTimezone(
         @Path("objectId") objectId: String,
         @Body body: ReqUpdateTimezone
-    ): NetworkResponse<RespUpdateTimezone, RespError>
+    ): NetworkResponse<RespUpdateTimezone>
 }

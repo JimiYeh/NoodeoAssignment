@@ -1,18 +1,18 @@
 package com.cloudinteractive.noodeoassignment.ui.login
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.os.PatternMatcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.widget.addTextChangedListener
+import androidx.appcompat.app.AppCompatActivity
 import com.cloudinteractive.noodeoassignment.R
 import com.cloudinteractive.noodeoassignment.databinding.ActivityLoginBinding
 import com.cloudinteractive.noodeoassignment.repository.NetworkResponse
+import com.cloudinteractive.noodeoassignment.ui.userInfo.UserInfoActivity
 import com.cloudinteractive.noodeoassignment.ui.viewBinding
 import java.util.regex.Pattern
 
@@ -64,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
             viewModel.loginResponse.observe(this@LoginActivity) { networkResponse ->
                 when (networkResponse) {
                     is NetworkResponse.Success -> {
+                        startActivity(Intent(this@LoginActivity, UserInfoActivity::class.java))
                         finish()
                     }
 

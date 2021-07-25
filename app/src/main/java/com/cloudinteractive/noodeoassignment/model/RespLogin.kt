@@ -24,7 +24,7 @@ data class RespLogin(
     @SerializedName("sessionToken")
     val sessionToken: String = "",
     @SerializedName("timezone")
-    val timezone: Int = 0,
+    var timezone: Int = 0,
     @SerializedName("updatedAt")
     val updatedAt: String = "",
     @SerializedName("username")

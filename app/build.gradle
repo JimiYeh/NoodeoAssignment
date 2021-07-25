@@ -18,6 +18,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "HOST", "\"https://watch-master-staging.herokuapp.com\""
+        buildConfigField "String", "PARSE_APPLICATION_ID" , "\"vqYuKPOkLQLYHhk4QTGsGKFwATT4mBIGREI2m8eD\""
     }
 
     buildTypes {
@@ -70,4 +71,5 @@ dependencies {
     // retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
 }

@@ -1,26 +1,22 @@
 package com.cloudinteractive.noodeoassignment.network
 
-import android.util.Log
 import com.cloudinteractive.noodeoassignment.model.RespError
 import com.cloudinteractive.noodeoassignment.repository.NetworkResponse
 import com.google.gson.Gson
 import okhttp3.Request
-import okhttp3.ResponseBody
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.Callback
-import retrofit2.Converter
 import retrofit2.Response
 import java.io.IOException
 
-internal class NetworkResponseCall<S : Any, E : Any>(
-    private val delegate: Call<S>,
-    private val errorConverter: Converter<ResponseBody, E>
-) : Call<NetworkResponse<S, E>> {
+internal class NetworkResponseCall<T : Any>(
+    private val delegate: Call<T>,
+) : Call<NetworkResponse<T>> {
 
-    override fun enqueue(callback: Callback<NetworkResponse<S, E>>) {
-        return delegate.enqueue(object : Callback<S> {
-            override fun onResponse(call: Call<S>, response: Response<S>) {
+    override fun enqueue(callback: Callback<NetworkResponse<T>>) {
+        return delegate.enqueue(object : Callback<T> {
+            override fun onResponse(call: Call<T>, response: Response<T>) {
                 val body = response.body()
                 val code = response.code()
                 val error = response.errorBody()
@@ -40,15 +36,11 @@ internal class NetworkResponseCall<S : Any, E : Any>(
                     }
                 } else {
 
-                    val st = response.errorBody()?.string()
-                    Log.e("Jimi", st ?: "")
-
                     val errorBody = when {
                         error == null -> null
                         error.contentLength() == 0L -> null
                         else -> try {
-//                            errorConverter.convert(error)
-                            Gson().fromJson<RespError>(st, RespError::class.java)
+                            Gson().fromJson(error.string(), RespError::class.java)
                         } catch (ex: Exception) {
                             null
                         }
@@ -69,7 +61,7 @@ internal class NetworkResponseCall<S : Any, E : Any>(
                 }
             }
 
-            override fun onFailure(call: Call<S>, throwable: Throwable) {
+            override fun onFailure(call: Call<T>, throwable: Throwable) {
                 val networkResponse = when (throwable) {
                     is IOException -> NetworkResponse.NetworkError(throwable)
                     else -> NetworkResponse.UnknownError(throwable)
@@ -81,13 +73,13 @@ internal class NetworkResponseCall<S : Any, E : Any>(
 
     override fun isExecuted() = delegate.isExecuted
 
-    override fun clone() = NetworkResponseCall(delegate.clone(), errorConverter)
+    override fun clone() = NetworkResponseCall(delegate.clone())
 
     override fun isCanceled() = delegate.isCanceled
 
     override fun cancel() = delegate.cancel()
 
-    override fun execute(): Response<NetworkResponse<S, E>> {
+    override fun execute(): Response<NetworkResponse<T>> {
         throw UnsupportedOperationException("NetworkResponseCall doesn't support execute")
     }
 

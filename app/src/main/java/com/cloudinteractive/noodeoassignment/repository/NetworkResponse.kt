@@ -1,25 +1,26 @@
 package com.cloudinteractive.noodeoassignment.repository
 
+import com.cloudinteractive.noodeoassignment.model.RespError
 import java.io.IOException
 
-sealed class NetworkResponse<out T : Any, out U : Any> {
+sealed class NetworkResponse<out T : Any> {
     /**
      * Success response with body
      */
-    data class Success<T : Any>(val body: T) : NetworkResponse<T, Nothing>()
+    data class Success<T : Any>(val body: T) : NetworkResponse<T>()
 
     /**
      * Failure response with body
      */
-    data class ApiError<U : Any>(val body: U, val code: Int) : NetworkResponse<Nothing, U>()
+    data class ApiError(val body: RespError, val code: Int) : NetworkResponse<Nothing>()
 
     /**
      * Network error
      */
-    data class NetworkError(val error: IOException) : NetworkResponse<Nothing, Nothing>()
+    data class NetworkError(val error: IOException) : NetworkResponse<Nothing>()
 
     /**
      * For example, json parsing error
      */
-    data class UnknownError(val error: Throwable?) : NetworkResponse<Nothing, Nothing>()
+    data class UnknownError(val error: Throwable?) : NetworkResponse<Nothing>()
 }

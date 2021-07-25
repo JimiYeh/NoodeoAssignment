@@ -1,7 +1,6 @@
 package com.cloudinteractive.noodeoassignment.network
 
 import com.cloudinteractive.noodeoassignment.model.ReqUpdateTimezone
-import com.cloudinteractive.noodeoassignment.model.RespError
 import com.cloudinteractive.noodeoassignment.model.RespLogin
 import com.cloudinteractive.noodeoassignment.model.RespUpdateTimezone
 import com.cloudinteractive.noodeoassignment.repository.IRepository
@@ -12,7 +11,7 @@ class NetworkRepository : IRepository {
     override suspend fun login(
         userName: String,
         password: String
-    ): NetworkResponse<RespLogin, RespError> {
+    ): NetworkResponse<RespLogin> {
         val resp = Client.apiService.login(userName, password)
         if (resp is NetworkResponse.Success) {
             UserInfo.info = resp.body
@@ -24,6 +23,6 @@ class NetworkRepository : IRepository {
     override suspend fun updateTimezone(
         objectId: String,
         timezone: Int
-    ): NetworkResponse<RespUpdateTimezone, RespError> = Client.apiService.updateTimezone(objectId, ReqUpdateTimezone(timezone))
+    ): NetworkResponse<RespUpdateTimezone> = Client.apiService.updateTimezone(objectId, ReqUpdateTimezone(timezone))
 
 }
